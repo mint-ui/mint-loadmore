@@ -1,6 +1,6 @@
 {
   "name": "vue-loadmore",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A mobile load-more component for vue.js",
   "main": "lib/index.js",
   "scripts": {
@@ -14,10 +14,8 @@
   },
   "author": "yi.shyang@ele.me",
   "license": "MIT",
-  "devDependencies": {
-  },
-  "dependencies": {
-  },
+  "devDependencies": {},
+  "dependencies": {},
   "bugs": {
     "url": "https://github.com/ElemeFE/vue-loadmore/issues"
   },
