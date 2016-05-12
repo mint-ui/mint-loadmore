@@ -1,0 +1,25 @@
+{
+  "name": "vue-loadmore",
+  "version": "0.0.1",
+  "description": "A mobile load-more component for vue.js",
+  "main": "lib/index.js",
+  "scripts": {
+    "watch": "cooking watch",
+    "build": "cooking build",
+    "prepublish": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Leopoldthecoder/vue-loadmore.git"
+  },
+  "author": "yi.shyang@ele.me",
+  "license": "MIT",
+  "devDependencies": {
+  },
+  "dependencies": {
+  },
+  "bugs": {
+    "url": "https://github.com/Leopoldthecoder/vue-loadmore/issues"
+  },
+  "homepage": "https://github.com/Leopoldthecoder/vue-loadmore#readme"
+}
