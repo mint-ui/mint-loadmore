@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Leopoldthecoder/vue-loadmore.git"
+    "url": "git+https://github.com/ElemeFE/vue-loadmore.git"
   },
   "author": "yi.shyang@ele.me",
   "license": "MIT",
@@ -19,7 +19,7 @@
   "dependencies": {
   },
   "bugs": {
-    "url": "https://github.com/Leopoldthecoder/vue-loadmore/issues"
+    "url": "https://github.com/ElemeFE/vue-loadmore/issues"
   },
-  "homepage": "https://github.com/Leopoldthecoder/vue-loadmore#readme"
+  "homepage": "https://github.com/ElemeFE/vue-loadmore#readme"
 }
