@@ -48,7 +48,7 @@ At the end of your `top-method`, don't forget to broadcast the `onTopLoaded` eve
  
 For downward direction, `bottom-method` will run when the bottom of the component is less than `bottomDistance` pixels away from the bottom of its container:
 ```Javascript
-  loadBottom{
+  loadBottom() {
     ...// load more data
     this.allLoaded = true;// if all data are loaded
     this.$broadcast('onBottomLoaded');
