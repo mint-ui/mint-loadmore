@@ -29,7 +29,7 @@ Then use it:
 ```
 
 # Example
-Visit (this page)[http://leopoldthecoder.github.io/Demos/vue-loadmore/index.html] using your mobile device.
+Visit [this page](http://leopoldthecoder.github.io/Demos/vue-loadmore/index.html) using your mobile device.
 ```html
 <loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded">
   <ul>
@@ -55,6 +55,7 @@ For downward direction, `bottom-method` will run when the bottom of the componen
   }
 ```
 Remember to set `bottom-all-loaded` to `true` after all data are loaded. And of course broadcast `onBottomLoaded`.
+
 If you don't need to load data from upward direction, simply omit the `topMethod` attribute. Same goes to downward.
 
 # API
