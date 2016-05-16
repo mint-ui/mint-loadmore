@@ -42,19 +42,32 @@
     .example-listitem:last-child {
       margin-bottom: 0;
     }
+
+    .example-wrapper {
+      height: 300px;
+      overflow: scroll;
+    }
   </style>
   <title>vue-loadmore example</title>
 </head>
 <body>
-<p class="example-title">vue-loadmore example</p>
-<div id="example">
+<p class="example-title">Bottom loads automatically</p>
+<div class="example-wrapper" id="example1">
   <loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded">
     <ul class="example-list">
       <li v-for="item in list" class="example-listitem">{{ item }}</li>
     </ul>
   </loadmore>
 </div>
-<script src="https://cdn.css.net/libs/vue/1.0.10/vue.min.js"></script>
+<p class="example-title">Bottom pull-to-refresh</p>
+<div class="example-wrapper" id="example2">
+  <loadmore :top-method="loadTop2" :bottom-method="loadBottom2" :bottom-all-loaded="allLoaded2" :bottom-need-pull="true">
+    <ul class="example-list">
+      <li v-for="item in list2" class="example-listitem">{{ item }}</li>
+    </ul>
+  </loadmore>
+</div>
+<script src="./dist/vue.js"></script>
 <script src="./dist/build.js"></script>
 </body>
 </html>
