@@ -29,7 +29,7 @@ Then use it:
 ```
 
 # Example
-Visit (this page)[http://leopoldthecoder.github.io/Demos/vue-loadmore/index.html] using your mobile device.
+Visit [this page](http://leopoldthecoder.github.io/Demos/vue-loadmore/index.html) using your mobile device.
 ```html
 <loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded">
   <ul>
@@ -55,7 +55,7 @@ For downward direction, you have two options:
 *  Set `bottom-need-pull` to `true`, then pull-to-refresh will be applied. In this case, to invoke `bottom-method`, just pull the component `bottomDistance` pixels away from the bottom and then release it.
 *  Set `bottom-need-pull` to `false` or simply omit it, `bottom-method` will run automatically when the bottom of the component is less than `bottomDistance` pixels away from the bottom of its container.
 
-The (example)[http://leopoldthecoder.github.io/Demos/vue-loadmore/index.html] demonstrates the difference between these two options.
+The [example](http://leopoldthecoder.github.io/Demos/vue-loadmore/index.html) demonstrates the difference between these two options.
 
 ```Javascript
   loadDown() {
