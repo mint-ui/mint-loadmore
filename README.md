@@ -1,5 +1,5 @@
 # Overview
-vue-loadmore is a two-direction mobile load-more plugin for vue.js.
+vue-loadmore is a two-direction mobile load-more component for vue.js.
 
 # Installation
 ```bash
@@ -44,10 +44,10 @@ Visit (this page)[http://leopoldthecoder.github.io/Demos/vue-loadmore/index.html
 ```
 For upward direction, `vue-loadmore` uses pull-to-refresh to load more. Pull the component `topDistance` pixels away from the top and then release it, the function you appointed as `top-method` will run:
 ```Javascript
-  loadTop() {
-    ...// load more data
-    this.$broadcast('onTopLoaded');
-  }
+loadTop() {
+  ...// load more data
+  this.$broadcast('onTopLoaded');
+}
 ```
 At the end of your `top-method`, don't forget to broadcast the `onTopLoaded` event so that `vue-loadmore` removes `topLoadingText`.
  
@@ -58,11 +58,11 @@ For downward direction, you have two options:
 The (example)[http://leopoldthecoder.github.io/Demos/vue-loadmore/index.html] demonstrates the difference between these two options.
 
 ```Javascript
-  loadDown() {
-    ...// load more data
-    this.allLoaded = true;// if all data are loaded
-    this.$broadcast('onBottomLoaded');
-  }
+loadBottom() {
+  ...// load more data
+  this.allLoaded = true;// if all data are loaded
+  this.$broadcast('onBottomLoaded');
+}
 ```
 Remember to set `bottom-all-loaded` to `true` after all data are loaded. And of course broadcast `onBottomLoaded`.
 
