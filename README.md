@@ -69,7 +69,7 @@ You can customize the top and bottom DOM using an HTML template. For example, to
 *  `pull` if the component is being pulled yet not ready to drop (top distance is within the distance threshold defined by `topDistance`)
 *  `drop` if the component is ready to drop
 *  `loading` if `topMethod` is running
-*  
+
 And of course, if a top HTMl template is given, `topPullText`, `topDropText` and `topLoadingText` are all unnecessary.
 
 Don't need to load data from upward direction? Simply omit the `topMethod` attribute. Same goes to downward.
