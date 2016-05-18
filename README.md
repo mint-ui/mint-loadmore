@@ -63,12 +63,13 @@ loadBottom(id) {
   this.$broadcast('onBottomLoaded', id);
 }
 ```
-Remember to set `bottom-all-loaded` to `true` after all data are loaded. And of course broadcast `onBottomLoaded`. Note that a parameter called `id` is passed to `loadmore`. This is because after the bottom data is loaded, some reposition work is performed inside a `vue-loadmore` instance, and `id` simply tells the component which instance should be repositioned. You don't need to do anything more than passing `id` to `onBottomLoaded` just as shown above.
+Remember to set `bottom-all-loaded` to `true` after all data are loaded. And of course broadcast `onBottomLoaded`. Note that a parameter called `id` is passed to `loadBottom`. This is because after the bottom data is loaded, some reposition work is performed inside a `vue-loadmore` instance, and `id` simply tells the component which instance should be repositioned. You don't need to do anything more than passing `id` to `onBottomLoaded` just as shown above.
 
 You can customize the top and bottom DOM using an HTML template. For example, to customize the top DOM, you'll need to add a variable that syncs with `top-status` on `loadmore` tag, and then write your template with a `slot` attribute set to `top` and `class` set to `kebab-loadmore-top`. `top-status` has three possible values that indicates which status the component is at:
-*  `pull` if the component is being pulled yet not ready to drop
+*  `pull` if the component is being pulled yet not ready to drop (top distance is within the distance threshold defined by `topDistance`)
 *  `drop` if the component is ready to drop
 *  `loading` if `topMethod` is running
+*  
 And of course, if a top HTMl template is given, `topPullText`, `topDropText` and `topLoadingText` are all unnecessary.
 
 Don't need to load data from upward direction? Simply omit the `topMethod` attribute. Same goes to downward.
