@@ -1,52 +1,48 @@
 <template>
-  <div class="loadmore">
-    <div class="loadmore-content" :class="{ 'dropped': topDropped || bottomDropped}" :style="{ 'transform': 'translate3d(0, ' + translate + 'px, 0)' }" v-el:loadmore-content>
-      <div class="loadmore-top">{{ topText }}</div>
+  <div class="kebab-loadmore">
+    <div class="kebab-loadmore-content" :class="{ 'is-dropped': topDropped || bottomDropped}" :style="{ 'transform': 'translate3d(0, ' + translate + 'px, 0)' }" v-el:loadmore-content>
+      <slot name="top">
+        <div class="kebab-loadmore-top">{{ topText }}</div>
+      </slot>
       <slot></slot>
-      <div class="loadmore-bottom" v-if="loadingBottom && !bottomNeedPull">{{ bottomLoadingText }}</div>
-      <div class="loadmore-bottom loadmore-pullbottom" v-if="showBottomText && bottomNeedPull">{{ bottomText }}</div>
+      <slot name="down">
+        <div class="kebab-loadmore-bottom">{{ bottomText }}</div>
+      </slot>
     </div>
   </div>
 </template>
 
 <style>
-  .loadmore {
-    overflow: hidden;
-  }
+  @component-namespace kebab {
+    @component loadmore {
+      overflow: hidden;
 
-  .loadmore-content {
-    position: relative;
-  }
+      @descendent content {
+        @when dropped {
+          transition: .2s;
+        }
+      }
 
-  .loadmore-content.dropped {
-    transition: .2s;
-  }
+      @descendent top, bottom {
+        text-align: center;
+        height: 50px;
+        line-height: 50px;
+      }
 
-  .loadmore-top {
-    margin-top: -50px;
-    position: relative;
-    text-align: center;
-    overflow: hidden;
-    height: 50px;
-    line-height: 50px;
-    transform: translateZ(0);
-  }
+      @descendent top {
+        margin-top: -50px;
+      }
 
-  .loadmore-bottom {
-    text-align: center;
-    height: 50px;
-    line-height: 50px;
-  }
-
-  .loadmore-pullbottom {
-    position: absolute;
-    bottom: -50px;
-    width: 100%;
+      @descendent bottom {
+        margin-bottom: -50px;
+      }
+    }
   }
 </style>
 
 <script type="text/babel">
   export default {
+    name: 'kb-loadmore',
     props: {
       topPullText: {
         type: String,
@@ -67,9 +63,9 @@
       topMethod: {
         type: Function
       },
-      bottomNeedPull: {
-        type: Boolean,
-        default: false
+      topStatus: {
+        type: String,
+        default: ''
       },
       bottomPullText: {
         type: String,
@@ -90,6 +86,10 @@
       bottomMethod: {
         type: Function
       },
+      bottomStatus: {
+        type: String,
+        default: ''
+      },
       bottomAllLoaded: {
         type: Boolean,
         default: false
@@ -98,19 +98,15 @@
 
     data() {
       return {
+        uuid: null,
         translate: 0,
         scrollEventTarget: null,
         containerFilled: false,
-        loadingTop: false,
         topText: '',
-        topReady: false,
         topDropped: false,
-        loadingBottom: false,
         bottomText: '',
-        bottomReady: false,
         bottomDropped: false,
         bottomReached: false,
-        showBottomText: false,
         direction: '',
         startY: 0,
         startScrollTop: 0,
@@ -118,17 +114,48 @@
       };
     },
 
-    events: {
-      onTopLoaded() {
-        this.loadingTop = false;
-        this.translate = 0;
+    watch: {
+      topStatus(val) {
+        switch (val) {
+          case 'pull':
+            this.topText = this.topPullText;
+            break;
+          case 'drop':
+            this.topText = this.topDropText;
+            break;
+          case 'loading':
+            this.topText = this.topLoadingText;
+            break;
+        }
       },
 
-      onBottomLoaded() {
-        this.loadingBottom = false;
-        this.showBottomText = false;
+      bottomStatus(val) {
+        switch (val) {
+          case 'pull':
+            this.bottomText = this.bottomPullText;
+            break;
+          case 'drop':
+            this.bottomText = this.bottomDropText;
+            break;
+          case 'loading':
+            this.bottomText = this.bottomLoadingText;
+            break;
+        }
+      }
+    },
+
+    events: {
+      onTopLoaded() {
+        this.translate = 0;
+        setTimeout(() => {
+          this.topStatus = 'pull';
+        }, 200);
+      },
+
+      onBottomLoaded(id) {
+        this.bottomStatus = 'pull';
         this.bottomDropped = false;
-        if (this.bottomNeedPull) {
+        if (id === this.uuid) {
           this.$nextTick(() => {
             if (this.scrollEventTarget === window) {
               document.body.scrollTop += 50;
@@ -172,15 +199,13 @@
       },
 
       init() {
+        this.topStatus = 'pull';
+        this.bottomStatus = 'pull';
         this.topText = this.topPullText;
         this.scrollEventTarget = this.getScrollEventTarget(this.$el);
         if (typeof this.bottomMethod === 'function') {
           this.fillContainer();
-          if (!this.bottomNeedPull) {
-            this.scrollEventTarget.addEventListener('scroll', this.handleScroll);
-          } else {
-            this.bindTouchEvents();
-          }
+          this.bindTouchEvents();
         }
         if (typeof this.topMethod === 'function') {
           this.bindTouchEvents();
@@ -195,47 +220,31 @@
             this.containerFilled = this.$el.getBoundingClientRect().bottom >= this.scrollEventTarget.getBoundingClientRect().bottom;
           }
           if (!this.containerFilled) {
-            this.loadingBottom = true;
-            this.bottomText = this.bottomLoadingText;
-            this.bottomMethod();
+            this.bottomStatus = 'loading';
+            this.bottomMethod(this.uuid);
           }
         });
       },
 
       checkBottomReached() {
         if (this.scrollEventTarget === window) {
-          return document.body.scrollTop + document.body.clientHeight === document.body.scrollHeight;
+          return document.body.scrollTop + document.documentElement.clientHeight === document.body.scrollHeight;
         } else {
           return this.$el.getBoundingClientRect().bottom === this.scrollEventTarget.getBoundingClientRect().bottom;
         }
       },
 
-      handleScroll() {
-        if (typeof this.bottomMethod === 'function' && !this.loadingBottom && !this.bottomAllLoaded) {
-          let viewedHeight;
-          if (this.scrollEventTarget === window) {
-            viewedHeight = document.documentElement.clientHeight - this.$el.getBoundingClientRect().top;
-          } else {
-            viewedHeight = this.scrollEventTarget.scrollTop + this.scrollEventTarget.clientHeight;
-          }
-          if (viewedHeight + this.bottomDistance >= this.$el.getBoundingClientRect().height) {
-            this.loadingBottom = true;
-            this.bottomMethod();
-          }
-        }
-      },
-
       handleTouchStart(event) {
-        this.startY = event.touches[0].pageY;
+        this.startY = event.touches[0].clientY;
         this.startScrollTop = this.getScrollTop(this.scrollEventTarget);
         this.bottomReached = false;
-        if (!this.loadingTop) {
+        if (this.topStatus !== 'loading') {
+          this.topStatus = 'pull';
           this.topDropped = false;
-          this.topText = this.topPullText;
         }
-        if (!this.loadingBottom) {
+        if (this.bottomStatus !== 'loading') {
+          this.bottomStatus = 'pull';
           this.bottomDropped = false;
-          this.bottomText = this.bottomPullText;
         }
       },
 
@@ -243,67 +252,55 @@
         if (this.startY < this.$el.getBoundingClientRect().top && this.startY > this.$el.getBoundingClientRect().bottom) {
           return;
         }
-        this.currentY = event.touches[0].pageY;
-        let distance = this.currentY - this.startY - this.startScrollTop;
-        this.direction = this.currentY - this.startY > 0 ? 'down' : 'up';
-        if (typeof this.topMethod === 'function' && this.direction === 'down' && this.getScrollTop(this.scrollEventTarget) === 0 && !this.loadingTop) {
+        this.currentY = event.touches[0].clientY;
+        let distance = this.currentY - this.startY;
+        this.direction = distance > 0 ? 'down' : 'up';
+        if (typeof this.topMethod === 'function' && this.direction === 'down' && this.getScrollTop(this.scrollEventTarget) === 0 && this.topStatus !== 'loading') {
           event.preventDefault();
           event.stopPropagation();
-          this.translate = distance;
-          if (distance >= this.topDistance) {
-            this.topText = this.topDropText;
-            this.topReady = true;
-          } else {
-            this.topText = this.topPullText;
-            this.topReady = false;
+          this.translate = distance - this.startScrollTop;
+          if (this.translate < 0) {
+            this.translate = 0;
           }
+          this.topStatus = this.translate >= this.topDistance ? 'drop' : 'pull';
         }
 
-        this.bottomReached = this.bottomReached || this.checkBottomReached();
-        if (typeof this.bottomMethod === 'function' && this.direction === 'up' && this.bottomReached && !this.loadingBottom && this.bottomNeedPull && !this.bottomAllLoaded) {
+        if (this.direction === 'up') {
+          this.bottomReached = this.bottomReached || this.checkBottomReached();
+        }
+        if (typeof this.bottomMethod === 'function' && this.direction === 'up' && this.bottomReached && this.bottomStatus !== 'loading' && !this.bottomAllLoaded) {
           event.preventDefault();
           event.stopPropagation();
-          this.showBottomText = true;
-          this.translate = (this.scrollEventTarget === window ? this.startScrollTop : this.getScrollTop(this.scrollEventTarget)) + distance;
-          if (-this.translate >= this.bottomDistance) {
-            this.bottomText = this.bottomDropText;
-            this.bottomReady = true;
-          } else {
-            this.bottomText = this.bottomPullText;
-            this.bottomReady = false;
+          this.translate = this.getScrollTop(this.scrollEventTarget) - this.startScrollTop + distance;
+          if (this.translate > 0) {
+            this.translate = 0;
           }
+          this.bottomStatus = -this.translate >= this.bottomDistance ? 'drop' : 'pull';
         }
       },
 
       handleTouchEnd() {
         if (this.direction === 'down' && this.getScrollTop(this.scrollEventTarget) === 0 && this.translate > 0) {
           this.topDropped = true;
-          if (this.topReady) {
+          if (this.topStatus === 'drop') {
             this.translate = '50';
-            this.topText = this.topLoadingText;
-            this.loadingTop = true;
-            this.topReady = false;
+            this.topStatus = 'loading';
             this.topMethod();
           } else {
             this.translate = '0';
-            this.topText = this.topPullText;
+            this.topStatus = 'pull';
           }
         }
-        if (this.direction === 'up' && this.bottomReached && this.bottomNeedPull && this.translate < 0) {
+        if (this.direction === 'up' && this.bottomReached && this.translate < 0) {
           this.bottomDropped = true;
           this.bottomReached = false;
-          if (this.bottomReady) {
+          if (this.bottomStatus === 'drop') {
             this.translate = '-50';
-            this.bottomText = this.bottomLoadingText;
-            this.loadingBottom = true;
-            this.bottomReady = false;
-            this.bottomMethod();
+            this.bottomStatus = 'loading';
+            this.bottomMethod(this.uuid);
           } else {
             this.translate = '0';
-            this.bottomText = this.bottomPullText;
-            setTimeout(() => {
-              this.showBottomText = false;
-            }, 200);
+            this.bottomStatus = 'pull';
           }
         }
         this.direction = '';
@@ -311,6 +308,7 @@
     },
 
     ready() {
+      this.uuid = Math.random().toString(36).substring(3, 8);
       this.init();
     }
   };

@@ -13,7 +13,7 @@ cooking.set({
   format: 'umd',
   moduleName: 'VueLoadmore',
 
-  extends: ['vue', 'lint']
+  extends: ['vue', 'lint', 'saladcss']
 });
 
 cooking.add('externals.vue', 'vue');

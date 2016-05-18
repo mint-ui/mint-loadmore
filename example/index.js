@@ -24,7 +24,7 @@ new Vue({
       }, 1500);
     },
 
-    loadBottom() {
+    loadBottom(id) {
       setTimeout(() => {
         let lastValue = this.list[this.list.length - 1];
         if (lastValue < 40) {
@@ -34,7 +34,7 @@ new Vue({
         } else {
           this.allLoaded = true;
         }
-        this.$broadcast('onBottomLoaded');
+        this.$broadcast('onBottomLoaded', id);
       }, 1500);
     }
   },
@@ -55,7 +55,7 @@ new Vue({
   data() {
     return {
       list2: [],
-      allLoaded2: false
+      topStatus: ''
     };
   },
 
@@ -68,20 +68,6 @@ new Vue({
           }
         }
         this.$broadcast('onTopLoaded');
-      }, 1500);
-    },
-
-    loadBottom2() {
-      setTimeout(() => {
-        let lastValue = this.list2[this.list2.length - 1];
-        if (lastValue < 40) {
-          for (let i = 1; i <= 10; i++) {
-            this.list2.push(lastValue + i);
-          }
-        } else {
-          this.allLoaded2 = true;
-        }
-        this.$broadcast('onBottomLoaded');
       }, 1500);
     }
   },

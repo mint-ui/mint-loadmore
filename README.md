@@ -1,5 +1,5 @@
 # Overview
-vue-loadmore is a two-direction mobile load-more component for vue.js.
+vue-loadmore is a two-direction mobile pull-to-refresh component for vue.js.
 
 # Installation
 ```bash
@@ -36,13 +36,17 @@ Visit [this page](http://leopoldthecoder.github.io/Demos/vue-loadmore/index.html
     <li v-for="item in list">{{ item }}</li>
   </ul>
 </loadmore>
-<loadmore :top-method="loadTop2" :bottom-method="loadBottom2" :bottom-all-loaded="allLoaded2" :bottom-need-pull="true">
+<loadmore :top-method="loadTop2" :top-status.sync="topStatus">
   <ul>
     <li v-for="item in list2">{{ item }}</li>
   </ul>
+  <div slot="top" class="kebab-loadmore-top">
+    <span v-show="topStatus !== 'loading'" :class="{ 'rotate': topStatus === 'drop' }">↓</span>
+    <span v-show="topStatus === 'loading'">Loading...</span>
+  </div>
 </loadmore>
 ```
-For upward direction, `vue-loadmore` uses pull-to-refresh to load more. Pull the component `topDistance` pixels away from the top and then release it, the function you appointed as `top-method` will run:
+For upward direction, pull the component `topDistance` pixels away from the top and then release it, the function you appointed as `top-method` will run:
 ```Javascript
 loadTop() {
   ...// load more data
@@ -51,22 +55,23 @@ loadTop() {
 ```
 At the end of your `top-method`, don't forget to broadcast the `onTopLoaded` event so that `vue-loadmore` removes `topLoadingText`.
  
-For downward direction, you have two options:
-*  Set `bottom-need-pull` to `true`, then pull-to-refresh will be applied. In this case, to invoke `bottom-method`, just pull the component `bottomDistance` pixels away from the bottom and then release it.
-*  Set `bottom-need-pull` to `false` or simply omit it, `bottom-method` will run automatically when the bottom of the component is less than `bottomDistance` pixels away from the bottom of its container.
-
-The [example](http://leopoldthecoder.github.io/Demos/vue-loadmore/index.html) demonstrates the difference between these two options.
-
+For downward direction, things are similar. To invoke `bottom-method`, just pull the component `bottomDistance` pixels away from the bottom and then release it.
 ```Javascript
-loadBottom() {
+loadBottom(id) {
   ...// load more data
   this.allLoaded = true;// if all data are loaded
-  this.$broadcast('onBottomLoaded');
+  this.$broadcast('onBottomLoaded', id);
 }
 ```
-Remember to set `bottom-all-loaded` to `true` after all data are loaded. And of course broadcast `onBottomLoaded`.
+Remember to set `bottom-all-loaded` to `true` after all data are loaded. And of course broadcast `onBottomLoaded`. Note that a parameter called `id` is passed to `loadmore`. This is because after the bottom data is loaded, some reposition work is performed inside a `vue-loadmore` instance, and `id` simply tells the component which instance should be repositioned. You don't need to do anything more than passing `id` to `onBottomLoaded` just as shown above.
 
-If you don't need to load data from upward direction, simply omit the `topMethod` attribute. Same goes to downward.
+You can customize the top and bottom DOM using an HTML template. For example, to customize the top DOM, you'll need to add a variable that syncs with `top-status` on `loadmore` tag, and then write your template with a `slot` attribute set to `top` and `class` set to `kebab-loadmore-top`. `top-status` has three possible values that indicates which status the component is at:
+*  `pull` if the component is being pulled yet not ready to drop
+*  `drop` if the component is ready to drop
+*  `loading` if `topMethod` is running
+And of course, if a top HTMl template is given, `topPullText`, `topDropText` and `topLoadingText` are all unnecessary.
+
+Don't need to load data from upward direction? Simply omit the `topMethod` attribute. Same goes to downward.
 
 # API
 | Option            | Description                                                      | Value    | Default     |
@@ -82,7 +87,6 @@ If you don't need to load data from upward direction, simply omit the `topMethod
 | bottomDistance    | distance threshold that triggers `bottomMethod`                  | Number   | 70          |
 | bottomMethod      | downward load-more function                                      | Function |             |
 | bottomAllLoaded   | if `true`, `bottomMethod` can no longer be triggered             | Boolean  | false       |
-| bottomNeedPull    | if `true`, pull-to-refresh will be applied on downward direction | Boolean  | false       |
 
 # License
 MIT

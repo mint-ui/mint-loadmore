@@ -47,11 +47,20 @@
       height: 300px;
       overflow: scroll;
     }
+
+    .kebab-loadmore-top span {
+      display: inline-block;
+      transition: .2s linear;
+    }
+
+    .rotate {
+      transform: rotate(180deg);
+    }
   </style>
   <title>vue-loadmore example</title>
 </head>
 <body>
-<p class="example-title">Bottom loads automatically</p>
+<p class="example-title">pull to refresh</p>
 <div class="example-wrapper" id="example1">
   <loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded">
     <ul class="example-list">
@@ -59,12 +68,16 @@
     </ul>
   </loadmore>
 </div>
-<p class="example-title">Bottom pull-to-refresh</p>
+<p class="example-title">custom HTML template</p>
 <div class="example-wrapper" id="example2">
-  <loadmore :top-method="loadTop2" :bottom-method="loadBottom2" :bottom-all-loaded="allLoaded2" :bottom-need-pull="true">
+  <loadmore :top-method="loadTop2" :top-status.sync="topStatus">
     <ul class="example-list">
       <li v-for="item in list2" class="example-listitem">{{ item }}</li>
     </ul>
+    <div slot="top" class="kebab-loadmore-top">
+      <span v-show="topStatus !== 'loading'" :class="{ 'rotate': topStatus === 'drop' }">↓</span>
+      <span v-show="topStatus === 'loading'">Loading...</span>
+    </div>
   </loadmore>
 </div>
 <script src="./vue.js"></script>
