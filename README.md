@@ -48,12 +48,12 @@ Visit [this page](http://leopoldthecoder.github.io/Demos/vue-loadmore/index.html
 ```
 For upward direction, pull the component `topDistance` pixels away from the top and then release it, the function you appointed as `top-method` will run:
 ```Javascript
-loadTop() {
+loadTop(id) {
   ...// load more data
-  this.$broadcast('onTopLoaded');
+  this.$broadcast('onTopLoaded', id);
 }
 ```
-At the end of your `top-method`, don't forget to broadcast the `onTopLoaded` event so that `vue-loadmore` removes `topLoadingText`.
+At the end of your `top-method`, don't forget to broadcast the `onTopLoaded` event so that `vue-loadmore` removes `topLoadingText`. Note that a parameter called `id` is passed to `loadTop` and `onTopLoaded`. This is because after the top data is loaded, some reposition work is performed inside a `vue-loadmore` instance, and `id` simply tells the component which instance should be repositioned. You don't need to do anything more than passing `id` to `onTopLoaded` just as shown above.
  
 For downward direction, things are similar. To invoke `bottom-method`, just pull the component `bottomDistance` pixels away from the bottom and then release it.
 ```Javascript
@@ -63,7 +63,7 @@ loadBottom(id) {
   this.$broadcast('onBottomLoaded', id);
 }
 ```
-Remember to set `bottom-all-loaded` to `true` after all data are loaded. And of course broadcast `onBottomLoaded`. Note that a parameter called `id` is passed to `loadBottom`. This is because after the bottom data is loaded, some reposition work is performed inside a `vue-loadmore` instance, and `id` simply tells the component which instance should be repositioned. You don't need to do anything more than passing `id` to `onBottomLoaded` just as shown above.
+Remember to set `bottom-all-loaded` to `true` after all data are loaded. And of course broadcast `onBottomLoaded` with `id`.
 
 You can customize the top and bottom DOM using an HTML template. For example, to customize the top DOM, you'll need to add a variable that syncs with `top-status` on `loadmore` tag, and then write your template with a `slot` attribute set to `top` and `class` set to `kebab-loadmore-top`. `top-status` has three possible values that indicates which status the component is at:
 *  `pull` if the component is being pulled yet not ready to drop (top distance is within the distance threshold defined by `topDistance`)

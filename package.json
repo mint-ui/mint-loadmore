@@ -4,7 +4,7 @@
   "description": "A mobile load-more component for vue.js",
   "main": "lib/index.js",
   "scripts": {
-    "watch": "cooking watch",
+    "watch": "cooking watch -c cooking.conf.js,cooking.example.conf.js",
     "build": "cooking build",
     "prepublish": "npm run build"
   },
@@ -15,7 +15,9 @@
   "author": "yi.shyang@ele.me",
   "license": "MIT",
   "devDependencies": {},
-  "dependencies": {},
+  "dependencies": {
+    "kb-spinner": "^0.1.1"
+  },
   "bugs": {
     "url": "https://github.com/ElemeFE/vue-loadmore/issues"
   },

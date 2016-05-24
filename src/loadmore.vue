@@ -2,11 +2,17 @@
   <div class="kebab-loadmore">
     <div class="kebab-loadmore-content" :class="{ 'is-dropped': topDropped || bottomDropped}" :style="{ 'transform': 'translate3d(0, ' + translate + 'px, 0)' }" v-el:loadmore-content>
       <slot name="top">
-        <div class="kebab-loadmore-top">{{ topText }}</div>
+        <div class="kebab-loadmore-top">
+          <kb-spinner v-if="topStatus === 'loading'" class="kebab-loadmore-spinner" :size="20" type="fading-circle"></kb-spinner>
+          <span class="kebab-loadmore-text">{{ topText }}</span>
+        </div>
       </slot>
       <slot></slot>
       <slot name="down">
-        <div class="kebab-loadmore-bottom">{{ bottomText }}</div>
+        <div class="kebab-loadmore-bottom">
+          <kb-spinner v-if="bottomStatus === 'loading'" class="kebab-loadmore-spinner" :size="20" type="fading-circle"></kb-spinner>
+          <span class="kebab-loadmore-text">{{ bottomText }}</span>
+        </div>
       </slot>
     </div>
   </div>
@@ -35,6 +41,16 @@
 
       @descendent bottom {
         margin-bottom: -50px;
+      }
+
+      @descendent spinner {
+        display: inline-block;
+        margin-right: 5px;
+        vertical-align: middle;
+      }
+
+      @descendent text {
+        vertical-align: middle;
       }
     }
   }
@@ -145,11 +161,13 @@
     },
 
     events: {
-      onTopLoaded() {
-        this.translate = 0;
-        setTimeout(() => {
-          this.topStatus = 'pull';
-        }, 200);
+      onTopLoaded(id) {
+        if (id === this.uuid) {
+          this.translate = 0;
+          setTimeout(() => {
+            this.topStatus = 'pull';
+          }, 200);
+        }
       },
 
       onBottomLoaded(id) {
@@ -285,7 +303,7 @@
           if (this.topStatus === 'drop') {
             this.translate = '50';
             this.topStatus = 'loading';
-            this.topMethod();
+            this.topMethod(this.uuid);
           } else {
             this.translate = '0';
             this.topStatus = 'pull';

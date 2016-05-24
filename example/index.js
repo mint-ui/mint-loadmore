@@ -13,14 +13,14 @@ new Vue({
   },
 
   methods: {
-    loadTop() {
+    loadTop(id) {
       setTimeout(() => {
         if (this.list[0] === 1) {
           for (let i = 0; i >= -10; i--) {
             this.list.unshift(i);
           }
         }
-        this.$broadcast('onTopLoaded');
+        this.$broadcast('onTopLoaded', id);
       }, 1500);
     },
 
@@ -60,14 +60,14 @@ new Vue({
   },
 
   methods: {
-    loadTop2() {
+    loadTop2(id) {
       setTimeout(() => {
         if (this.list2[0] === 1) {
           for (let i = 0; i >= -10; i--) {
             this.list2.unshift(i);
           }
         }
-        this.$broadcast('onTopLoaded');
+        this.$broadcast('onTopLoaded', id);
       }, 1500);
     }
   },
