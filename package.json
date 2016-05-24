@@ -16,7 +16,7 @@
   "license": "MIT",
   "devDependencies": {},
   "dependencies": {
-    "kb-spinner": "^0.1.1"
+    "kb-spinner": "^0.1.6"
   },
   "bugs": {
     "url": "https://github.com/ElemeFE/vue-loadmore/issues"
