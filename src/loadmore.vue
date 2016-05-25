@@ -1,17 +1,17 @@
 <template>
-  <div class="kebab-loadmore">
-    <div class="kebab-loadmore-content" :class="{ 'is-dropped': topDropped || bottomDropped}" :style="{ 'transform': 'translate3d(0, ' + translate + 'px, 0)' }" v-el:loadmore-content>
+  <div class="mint-loadmore">
+    <div class="mint-loadmore-content" :class="{ 'is-dropped': topDropped || bottomDropped}" :style="{ 'transform': 'translate3d(0, ' + translate + 'px, 0)' }" v-el:loadmore-content>
       <slot name="top">
-        <div class="kebab-loadmore-top">
-          <spinner v-if="topStatus === 'loading'" class="kebab-loadmore-spinner" :size="20" type="fading-circle"></spinner>
-          <span class="kebab-loadmore-text">{{ topText }}</span>
+        <div class="mint-loadmore-top">
+          <spinner v-if="topStatus === 'loading'" class="mint-loadmore-spinner" :size="20" type="fading-circle"></spinner>
+          <span class="mint-loadmore-text">{{ topText }}</span>
         </div>
       </slot>
       <slot></slot>
       <slot name="down">
-        <div class="kebab-loadmore-bottom">
-          <spinner v-if="bottomStatus === 'loading'" class="kebab-loadmore-spinner" :size="20" type="fading-circle"></spinner>
-          <span class="kebab-loadmore-text">{{ bottomText }}</span>
+        <div class="mint-loadmore-bottom">
+          <spinner v-if="bottomStatus === 'loading'" class="mint-loadmore-spinner" :size="20" type="fading-circle"></spinner>
+          <span class="mint-loadmore-text">{{ bottomText }}</span>
         </div>
       </slot>
     </div>
@@ -19,7 +19,7 @@
 </template>
 
 <style>
-  @component-namespace kebab {
+  @component-namespace mint {
     @component loadmore {
       overflow: hidden;
 
@@ -58,7 +58,7 @@
 
 <script type="text/babel">
   export default {
-    name: 'kb-loadmore',
+    name: 'mt-loadmore',
     props: {
       topPullText: {
         type: String,
