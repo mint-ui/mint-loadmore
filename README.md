@@ -1,19 +1,19 @@
 # Overview
-vue-loadmore is a two-direction mobile pull-to-refresh component for vue.js.
+mint-loadmore is a two-direction mobile pull-to-refresh component for vue.js.
 
 # Installation
 ```bash
-$ npm install vue-loadmore
+$ npm install mint-loadmore
 ```
 
 # Usage
-Import `vue-loadmore` to your project:
+Import `mint-loadmore` to your project:
 ```Javascript
 // ES6 mudule
-import Loadmore from 'vue-loadmore';
+import Loadmore from 'mint-loadmore';
 
 // CommonJS
-const Loadmore = require('vue-loadmore').default;
+const Loadmore = require('mint-loadmore').default;
 ```
 
 Register component:
@@ -40,7 +40,7 @@ Visit [this page](http://leopoldthecoder.github.io/Demos/vue-loadmore/index.html
   <ul>
     <li v-for="item in list2">{{ item }}</li>
   </ul>
-  <div slot="top" class="kebab-loadmore-top">
+  <div slot="top" class="mint-loadmore-top">
     <span v-show="topStatus !== 'loading'" :class="{ 'rotate': topStatus === 'drop' }">↓</span>
     <span v-show="topStatus === 'loading'">Loading...</span>
   </div>
@@ -53,7 +53,7 @@ loadTop(id) {
   this.$broadcast('onTopLoaded', id);
 }
 ```
-At the end of your `top-method`, don't forget to broadcast the `onTopLoaded` event so that `vue-loadmore` removes `topLoadingText`. Note that a parameter called `id` is passed to `loadTop` and `onTopLoaded`. This is because after the top data is loaded, some reposition work is performed inside a `vue-loadmore` instance, and `id` simply tells the component which instance should be repositioned. You don't need to do anything more than passing `id` to `onTopLoaded` just as shown above.
+At the end of your `top-method`, don't forget to broadcast the `onTopLoaded` event so that `mint-loadmore` removes `topLoadingText`. Note that a parameter called `id` is passed to `loadTop` and `onTopLoaded`. This is because after the top data is loaded, some reposition work is performed inside a `mint-loadmore` instance, and `id` simply tells the component which instance should be repositioned. You don't need to do anything more than passing `id` to `onTopLoaded` just as shown above.
  
 For downward direction, things are similar. To invoke `bottom-method`, just pull the component `bottomDistance` pixels away from the bottom and then release it.
 ```Javascript
@@ -65,7 +65,7 @@ loadBottom(id) {
 ```
 Remember to set `bottom-all-loaded` to `true` after all data are loaded. And of course broadcast `onBottomLoaded` with `id`.
 
-You can customize the top and bottom DOM using an HTML template. For example, to customize the top DOM, you'll need to add a variable that syncs with `top-status` on `loadmore` tag, and then write your template with a `slot` attribute set to `top` and `class` set to `kebab-loadmore-top`. `top-status` has three possible values that indicates which status the component is at:
+You can customize the top and bottom DOM using an HTML template. For example, to customize the top DOM, you'll need to add a variable that syncs with `top-status` on `loadmore` tag, and then write your template with a `slot` attribute set to `top` and `class` set to `mint-loadmore-top`. `top-status` has three possible values that indicates which status the component is at:
 *  `pull` if the component is being pulled yet not ready to drop (top distance is within the distance threshold defined by `topDistance`)
 *  `drop` if the component is ready to drop
 *  `loading` if `topMethod` is running

@@ -11,7 +11,7 @@ cooking.set({
 
   devServer: false,
   format: 'umd',
-  moduleName: 'VueLoadmore',
+  moduleName: 'MintLoadmore',
   extractCSS: 'index.css',
   extends: ['vue', 'lint', 'saladcss']
 });
