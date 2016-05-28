@@ -1,6 +1,6 @@
 {
   "name": "mint-loadmore",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A mobile load-more component for vue.js",
   "main": "lib/index.js",
   "scripts": {
