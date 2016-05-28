@@ -48,7 +48,7 @@
       overflow: scroll;
     }
 
-    .kebab-loadmore-top span {
+    .mint-loadmore-top span {
       display: inline-block;
       transition: .2s linear;
     }
@@ -74,7 +74,7 @@
     <ul class="example-list">
       <li v-for="item in list2" class="example-listitem">{{ item }}</li>
     </ul>
-    <div slot="top" class="kebab-loadmore-top">
+    <div slot="top" class="mint-loadmore-top">
       <span v-show="topStatus !== 'loading'" :class="{ 'rotate': topStatus === 'drop' }">↓</span>
       <span v-show="topStatus === 'loading'">Loading...</span>
     </div>
