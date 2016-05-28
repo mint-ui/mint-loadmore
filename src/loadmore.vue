@@ -8,7 +8,7 @@
         </div>
       </slot>
       <slot></slot>
-      <slot name="down">
+      <slot name="bottom">
         <div class="mint-loadmore-bottom">
           <spinner v-if="bottomStatus === 'loading'" class="mint-loadmore-spinner" :size="20" type="fading-circle"></spinner>
           <span class="mint-loadmore-text">{{ bottomText }}</span>
