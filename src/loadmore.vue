@@ -60,6 +60,10 @@
   export default {
     name: 'mt-loadmore',
     props: {
+      autoFill: {
+        type: Boolean,
+        default: true
+      },
       topPullText: {
         type: String,
         default: '下拉刷新'
@@ -231,17 +235,19 @@
       },
 
       fillContainer() {
-        this.$nextTick(() => {
-          if (this.scrollEventTarget === window) {
-            this.containerFilled = this.$el.getBoundingClientRect().bottom >= document.documentElement.getBoundingClientRect().bottom;
-          } else {
-            this.containerFilled = this.$el.getBoundingClientRect().bottom >= this.scrollEventTarget.getBoundingClientRect().bottom;
-          }
-          if (!this.containerFilled) {
-            this.bottomStatus = 'loading';
-            this.bottomMethod(this.uuid);
-          }
-        });
+        if (this.autoFill) {
+          this.$nextTick(() => {
+            if (this.scrollEventTarget === window) {
+              this.containerFilled = this.$el.getBoundingClientRect().bottom >= document.documentElement.getBoundingClientRect().bottom;
+            } else {
+              this.containerFilled = this.$el.getBoundingClientRect().bottom >= this.scrollEventTarget.getBoundingClientRect().bottom;
+            }
+            if (!this.containerFilled) {
+              this.bottomStatus = 'loading';
+              this.bottomMethod(this.uuid);
+            }
+          });
+        }
       },
 
       checkBottomReached() {
