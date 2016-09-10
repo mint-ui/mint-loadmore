@@ -31,7 +31,7 @@ Then use it:
 ```
 
 # Example
-Visit [this page](http://leopoldthecoder.github.io/Demos/vue-loadmore/index.html) using your mobile device.
+Visit [this page](http://elemefe.github.io/mint-ui/#!/pull-down) using your mobile device.
 ```html
 <loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded">
   <ul>
