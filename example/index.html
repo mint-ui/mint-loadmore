@@ -62,7 +62,7 @@
 <body>
 <p class="example-title">pull to refresh</p>
 <div class="example-wrapper" id="example1">
-  <loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded">
+  <loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="top">
     <ul class="example-list">
       <li v-for="item in list" class="example-listitem">{{ item }}</li>
     </ul>
@@ -70,7 +70,7 @@
 </div>
 <p class="example-title">custom HTML template</p>
 <div class="example-wrapper" id="example2">
-  <loadmore :top-method="loadTop2" :top-status.sync="topStatus">
+  <loadmore :top-method="loadTop2" @top-status-change="handleTopChange" ref="bottom">
     <ul class="example-list">
       <li v-for="item in list2" class="example-listitem">{{ item }}</li>
     </ul>
@@ -80,7 +80,7 @@
     </div>
   </loadmore>
 </div>
-<script src="./vue.js"></script>
+<script src="../node_modules/vue/dist/vue.js"></script>
 <script src="./dist/build.js"></script>
 </body>
 </html>

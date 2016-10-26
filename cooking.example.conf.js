@@ -5,13 +5,12 @@ cooking.set({
     build: './example/index.js'
   },
   dist: './example/dist',
-  use: 'vue',
   publicPath: '/example/dist/',
   template: false,
 
   devServer: false,
 
-  extends: ['vue', 'lint', 'saladcss']
+  extends: ['vue2', 'lint', 'saladcss']
 });
 
 cooking.add('externals.vue', 'Vue');

@@ -20,7 +20,7 @@ new Vue({
             this.list.unshift(i);
           }
         }
-        this.$broadcast('onTopLoaded', id);
+        this.$refs.top.onTopLoaded(id);
       }, 1500);
     },
 
@@ -39,7 +39,7 @@ new Vue({
     }
   },
 
-  compiled() {
+  created() {
     for (let i = 1; i <= 20; i++) {
       this.list.push(i);
     }
@@ -60,6 +60,10 @@ new Vue({
   },
 
   methods: {
+    handleTopChange(status) {
+      this.topStatus = status;
+    },
+
     loadTop2(id) {
       setTimeout(() => {
         if (this.list2[0] === 1) {
@@ -67,12 +71,12 @@ new Vue({
             this.list2.unshift(i);
           }
         }
-        this.$broadcast('onTopLoaded', id);
+        this.$refs.bottom.onTopLoaded(id);
       }, 1500);
     }
   },
 
-  compiled() {
+  created() {
     for (let i = 1; i <= 20; i++) {
       this.list2.push(i);
     }

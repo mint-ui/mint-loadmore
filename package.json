@@ -14,9 +14,12 @@
   },
   "author": "yi.shyang@ele.me",
   "license": "MIT",
-  "devDependencies": {},
+  "devDependencies": {
+    "vue": "^2.0.3",
+    "cooking-vue2": "^0.2.3"
+  },
   "dependencies": {
-    "mint-spinner": "^0.1.9"
+    "mint-spinner": "^2.0.0"
   },
   "bugs": {
     "url": "https://github.com/ElemeFE/vue-loadmore/issues"
