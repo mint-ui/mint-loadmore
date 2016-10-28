@@ -2,14 +2,14 @@
   <div class="mint-loadmore">
     <div class="mint-loadmore-content" :class="{ 'is-dropped': topDropped || bottomDropped}" :style="{ 'transform': 'translate3d(0, ' + translate + 'px, 0)' }" v-el:loadmore-content>
       <slot name="top">
-        <div class="mint-loadmore-top">
+        <div class="mint-loadmore-top" v-if="topMethod">
           <spinner v-if="topStatus === 'loading'" class="mint-loadmore-spinner" :size="20" type="fading-circle"></spinner>
           <span class="mint-loadmore-text">{{ topText }}</span>
         </div>
       </slot>
       <slot></slot>
       <slot name="bottom">
-        <div class="mint-loadmore-bottom">
+        <div class="mint-loadmore-bottom" v-if="bottomMethod">
           <spinner v-if="bottomStatus === 'loading'" class="mint-loadmore-spinner" :size="20" type="fading-circle"></spinner>
           <span class="mint-loadmore-text">{{ bottomText }}</span>
         </div>
@@ -57,9 +57,19 @@
 </style>
 
 <script type="text/babel">
+  import spinner from 'mint-spinner/lib/fading-circle/index.js';
+  import 'mint-spinner/lib/fading-circle/style.css';
   export default {
     name: 'mt-loadmore',
+    components: {
+      'spinner': spinner
+    },
+
     props: {
+      maxDistance: {
+        type: Number,
+        default: 150
+      },
       autoFill: {
         type: Boolean,
         default: true
@@ -252,9 +262,9 @@
 
       checkBottomReached() {
         if (this.scrollEventTarget === window) {
-          return document.body.scrollTop + document.documentElement.clientHeight === document.body.scrollHeight;
+          return document.body.scrollTop + document.documentElement.clientHeight >= document.body.scrollHeight;
         } else {
-          return this.$el.getBoundingClientRect().bottom === this.scrollEventTarget.getBoundingClientRect().bottom;
+          return this.$el.getBoundingClientRect().bottom <= this.scrollEventTarget.getBoundingClientRect().bottom + 1;
         }
       },
 
@@ -282,7 +292,7 @@
         if (typeof this.topMethod === 'function' && this.direction === 'down' && this.getScrollTop(this.scrollEventTarget) === 0 && this.topStatus !== 'loading') {
           event.preventDefault();
           event.stopPropagation();
-          this.translate = distance - this.startScrollTop;
+          this.translate = distance <= this.maxDistance ? distance - this.startScrollTop : this.translate;
           if (this.translate < 0) {
             this.translate = 0;
           }
@@ -295,7 +305,7 @@
         if (typeof this.bottomMethod === 'function' && this.direction === 'up' && this.bottomReached && this.bottomStatus !== 'loading' && !this.bottomAllLoaded) {
           event.preventDefault();
           event.stopPropagation();
-          this.translate = this.getScrollTop(this.scrollEventTarget) - this.startScrollTop + distance;
+          this.translate = Math.abs(distance) <= this.maxDistance ? this.getScrollTop(this.scrollEventTarget) - this.startScrollTop + distance : this.translate;
           if (this.translate > 0) {
             this.translate = 0;
           }
